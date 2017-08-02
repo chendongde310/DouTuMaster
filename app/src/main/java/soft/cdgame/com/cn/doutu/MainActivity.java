@@ -1,7 +1,9 @@
 package soft.cdgame.com.cn.doutu;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,6 +22,14 @@ public class MainActivity extends Activity {
         this.go = (TextView) findViewById(R.id.go);
         this.search = (EditText) findViewById(R.id.search);
         this.myimageview = (SimpleDraweeView) findViewById(R.id.my_image_view);
+        go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,ListActivity.class);
+                intent.putExtra("key",search.getText().toString());
+                startActivity(intent);
+            }
+        });
 
     }
 }
