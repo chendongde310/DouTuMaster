@@ -58,9 +58,10 @@ public class ListActivity extends Activity {
                         SimpleCacheKey(bean.pic));
 
                 File file = resource.getFile();
+
                 Intent imageIntent = new Intent(Intent.ACTION_SEND);
                 imageIntent.setType("image/jpeg");
-                imageIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                imageIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(file.toString().replace(".cnt",".jpg")));
                 startActivity(Intent.createChooser(imageIntent, "分享"));
             }
         });
