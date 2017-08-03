@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public class MainActivity extends Activity {
 
-    private com.facebook.drawee.view.SimpleDraweeView myimageview;
+    private ImageView myimageview;
     private android.widget.EditText search;
     private android.widget.TextView go;
 
@@ -21,7 +20,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         this.go = (TextView) findViewById(R.id.go);
         this.search = (EditText) findViewById(R.id.search);
-        this.myimageview = (SimpleDraweeView) findViewById(R.id.my_image_view);
+        this.myimageview = (ImageView) findViewById(R.id.my_image_view);
         go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

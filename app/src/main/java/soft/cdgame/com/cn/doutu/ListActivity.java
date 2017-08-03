@@ -8,13 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.facebook.binaryresource.FileBinaryResource;
-import com.facebook.cache.common.SimpleCacheKey;
-import com.facebook.drawee.backends.pipeline.Fresco;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import rx.Subscriber;
 
@@ -27,7 +27,7 @@ public class ListActivity extends Activity {
         setContentView(R.layout.activity_list);
         mList = (RecyclerView) findViewById(R.id.list);
         mList.setLayoutManager(new
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+                StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         final ListAdapter adapter = new ListAdapter();
         mList.setAdapter(adapter);
         String key = getIntent().getStringExtra("key");
@@ -51,35 +51,28 @@ public class ListActivity extends Activity {
 
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(final BaseQuickAdapter adapter, View view, final int position) {
 
-                BQBean bean = (BQBean) adapter.getData().get(position);
-                FileBinaryResource resource = (FileBinaryResource) Fresco.getImagePipelineFactory().getMainFileCache().getResource(new
-                        SimpleCacheKey(bean.pic));
+                final BQBean bean = (BQBean) adapter.getData().get(position);
 
-                File file = resource.getFile();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            File file = new File(Glide.with(ListActivity.this).download(bean.pic).submit().get().getParent().replace(".0",".jpg"));
+                            Logger.e(file.getPath());
+                            Intent imageIntent = new Intent(Intent.ACTION_SEND);
+                            imageIntent.setType("image/jpeg");
+                            imageIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                            startActivity(Intent.createChooser(imageIntent, "分享"));
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
 
-                Intent imageIntent = new Intent(Intent.ACTION_SEND);
-                imageIntent.setType("image/jpeg");
-                imageIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(file.toString().replace(".cnt",".jpg")));
-                startActivity(Intent.createChooser(imageIntent, "分享"));
+
             }
         });
-    }
-
-
-    public void shareMsg(String activityTitle, String msgTitle, String msgText,
-                         String imgPath) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        File f = new File(imgPath);
-        if (f != null && f.exists() && f.isFile()) {
-            intent.setType("image/jpg");
-            Uri u = Uri.fromFile(f);
-            intent.putExtra(Intent.EXTRA_STREAM, u);
-        }
-        intent.putExtra(Intent.EXTRA_SUBJECT, msgTitle);
-        intent.putExtra(Intent.EXTRA_TEXT, msgText);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(Intent.createChooser(intent, activityTitle));
     }
 }

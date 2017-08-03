@@ -1,8 +1,10 @@
 package soft.cdgame.com.cn.doutu;
 
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 /**
  * 作者：陈东  —  www.renwey.com
@@ -16,11 +18,9 @@ public class ListAdapter extends BaseQuickAdapter<BQBean, BaseViewHolder> {
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, BQBean item) {
+    protected void convert(BaseViewHolder helper, final BQBean item) {
+        final ImageView view = helper.getView(R.id.pic);
+        Glide.with(mContext).load(item.pic).into(view);
 
-
-        SimpleDraweeView view = helper.getView(R.id.pic);
-        view.setDrawingCacheEnabled(true);
-        view.setImageURI(item.pic);
     }
 }

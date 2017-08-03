@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
     tools:context="soft.cdgame.com.cn.doutu.MainActivity">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/my_image_view"
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp"
-        fresco:placeholderImage="@drawable/welcom" />
+        android:background="@drawable/welcom"
+        android:layout_marginTop="41dp" />
 
 
     <EditText
@@ -26,6 +25,7 @@
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
+        android:text="我"
         android:gravity="center"
         android:hint="输入关键字" />
 

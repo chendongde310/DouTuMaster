@@ -12,6 +12,7 @@ class BQBean implements Parcelable {
 
     public String url;
     public String pic;
+    public String path;
 
     @Override
     public int describeContents() {
@@ -22,6 +23,8 @@ class BQBean implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.url);
         dest.writeString(this.pic);
+        dest.writeString(this.path);
+
     }
 
     public BQBean() {
@@ -30,6 +33,7 @@ class BQBean implements Parcelable {
     protected BQBean(Parcel in) {
         this.url = in.readString();
         this.pic = in.readString();
+        this.path = in.readString();
     }
 
     public static final Parcelable.Creator<BQBean> CREATOR = new Parcelable.Creator<BQBean>() {
